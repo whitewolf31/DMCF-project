@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, LSTM, Dense
 
-def preprocess_AAPL_data(data):
+def preprocess_MSFT_data(data):
     # Apple stock split history
     splits = [
         {"date": "2020-08-31", "factor": 4},
@@ -48,7 +48,7 @@ def plot_closing_prices_by_year(data):
     plt.gca().xaxis.set_major_locator(mdates.YearLocator())  # Major ticks every year
 
     # Add labels and title
-    plt.title("AAPL Closing Prices Over 25 Years")
+    plt.title("MSFT Closing Prices Over 25 Years")
     plt.xlabel("Year")
     plt.ylabel("Price")
     plt.legend()
@@ -68,7 +68,7 @@ def plot_moving_average(data, window=50):
     plt.figure(figsize=(10, 5))
     plt.plot(df.index, df["Close"], label='Closing Price')
     plt.plot(df.index, df["Rolling Average"], label=f'{window}-Day Moving Average')
-    plt.title("AAPL Closing Price with Moving Average")
+    plt.title("MSFT Closing Price with Moving Average")
     plt.xlabel("Date")
     plt.ylabel("Price")
     plt.legend()
@@ -92,7 +92,7 @@ def plot_daily_returns_with_year(data):
     plt.gca().xaxis.set_major_locator(mdates.YearLocator())  # Major ticks every year
 
     # Add labels and title
-    plt.title("AAPL Daily Returns Distribution")
+    plt.title("MSFT Daily Returns Distribution")
     plt.xlabel("Year")
     plt.ylabel("Daily Return")
     plt.legend()
@@ -101,13 +101,13 @@ def plot_daily_returns_with_year(data):
     plt.xticks(rotation=45)
     plt.show()
 
-with open("AAPL.json", "r") as file:
+with open("MSFT.json", "r") as file:
     raw_APPL_data = json.load(file)
 
-preprocessed_data = preprocess_AAPL_data(raw_APPL_data["Time Series (Daily)"])
+preprocessed_data = preprocess_MSFT_data(raw_APPL_data["Time Series (Daily)"])
 preprocessed_data = {key: preprocessed_data[key] for key in reversed(preprocessed_data)}
 
-# Convert the preprocessed AAPL closing prices into a NumPy array
+# Convert the preprocessed MSFT closing prices into a NumPy array
 prices = np.array(list(preprocessed_data.values())).reshape(-1, 1)
 
 # Scale the data
@@ -161,7 +161,7 @@ actual_prices = scaler.inverse_transform(y_test.reshape(-1, 1))
 plt.figure(figsize=(10, 6))
 plt.plot(actual_prices, label="Actual Prices")
 plt.plot(predicted_prices, label="Predicted Prices")
-plt.title("AAPL Actual vs Predicted Closing Prices")
+plt.title("MSFT Actual vs Predicted Closing Prices")
 plt.xlabel("Days")
 plt.ylabel("Price")
 plt.legend()
